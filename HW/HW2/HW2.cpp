@@ -205,35 +205,102 @@ void Chain::SelectTarget() {
 
     int currentMacarons = current->macarons;
     int maxMacarons = 0;
+    int dist1=0, dist2=0;
+    bool sameMacarons = false;
+    plate* p;
     ptr = current;
-    
+
+    // Print();
 
     // Check if multiple plates have the same number of macarons
-    
-    
-
-
-
     while (ptr->next != current)
     {
         ptr = ptr->next;
-        if (ptr->macarons > maxMacarons && ptr->macarons < currentMacarons) {
-            target = ptr;
-            maxMacarons = ptr->macarons;
+        // cout << "now ptr = " << ptr->plateNum << endl;
+        p = ptr->next;
+
+        while (p != current->next) {
+            // cout << "now p = " << p->plateNum << endl;
+            if (p->macarons == ptr->macarons) {
+                // cout << "True at ptr = " << ptr->plateNum << endl;
+                sameMacarons = true;
+                break;
+            }
+            p = p->next;
         }
+
+        if (sameMacarons == true) 
+            break;  
     }
 
-    if (maxMacarons == 0) 
-    {  
-        // Current plate has fewest macarons, 
-        // so find the plate with the most macarons
+    if (sameMacarons) 
+    {
+        // Calculate the distance from the current plate
+        // dist1 for ptr;  dist2 for p
+        // dist: the number of nodes to go to current
+        // dist > 0 : go CW  to current
+        // dist < 0 : go CCW to current
+
+        while (ptr!=current) {
+            ptr = ptr->next;
+            dist1 ++;
+        }
+        if (dist1 >= 4)
+            dist1 -= 7;
+
+        while (p!=current) {
+            p = p->next;
+            dist2 ++;
+        }
+        if (dist2 >=4)
+            dist2 -=7;
+        
+        if(abs(dist1) > abs(dist2))
+            target = p;
+        else if (abs(dist1) < abs(dist2))
+            target = ptr;
+        else {
+            if (dist1<0)
+                target = ptr;
+            else
+                target = p;
+        }
+
+        // cout << "sameMacarons = true !" << endl;
+        // cout << "current = " << current->plateNum << endl;
+        // cout << "ptr = " << ptr->plateNum << endl;
+        // cout << "p   = " << p->plateNum << endl;
+    }
+
+
+
+    // Macarons in all plates are different. So the candidate plates 
+    // have smaller number of macarons than the current plate. 
+    // From the candidate plates, choose the one with the most macarons.
+    if (!sameMacarons)
+    {
         ptr = current;
         while (ptr->next != current)
         {
             ptr = ptr->next;
-            if (ptr->macarons > maxMacarons) {
+            if (ptr->macarons > maxMacarons && ptr->macarons < currentMacarons) {
                 target = ptr;
                 maxMacarons = ptr->macarons;
+            }
+        }
+
+        if (maxMacarons == 0) 
+        {  
+            // Current plate has fewest macarons, 
+            // so find the plate with the most macarons
+            ptr = current;
+            while (ptr->next != current)
+            {
+                ptr = ptr->next;
+                if (ptr->macarons > maxMacarons) {
+                    target = ptr;
+                    maxMacarons = ptr->macarons;
+                }
             }
         }
     }
@@ -300,6 +367,8 @@ int main() {
 
     for (int i = 0; i < 100; i++)
     {
+        // cout << "[i = " << i << " ]" << endl;
+
         plates.SelectCurrent();
         // cout << "step 1 finished" << endl;
         // cout << "current = " << plates.current->plateNum << endl;
@@ -334,7 +403,7 @@ int main() {
         // // cout << "After eating at target, macarons = " << plates.target->macarons << endl;
         // // cout << endl;
 
-        // cout << "[i = " << i << " ]" << endl;
+        
         // cout << endl;
         // plates.Print();
         // cout << endl;
