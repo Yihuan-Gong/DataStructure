@@ -273,7 +273,7 @@ void Chain::SelectTarget() {
     int bestMacarons, bestDist, startIndex;
     plateDetail plates[plateLength];
 
-    // cout << "[Unsort]  macarons = ";
+    // cout << "[Unsort]   plateNum/macarons/dist = ";
 
     /* Put the data into array from the main chain */
     ptr = current;
@@ -284,9 +284,13 @@ void Chain::SelectTarget() {
         plates[i].macarons = ptr->macarons;
         if (ptr == current) 
             plates[i].dist = 0;
+        else
+            plates[i].dist = 100;
+            
             
         ptr = ptr->next;
-        // cout  << plates[i].macarons << "  ";
+
+        // cout  << plates[i].plateNum << "/" << plates[i].macarons <<"/" << plates[i].dist << "  ";
     }
     // cout << endl;
 
@@ -295,12 +299,22 @@ void Chain::SelectTarget() {
     // Sort the array according to macarons
     sortMacarons(plates, plateLength);
 
+    // cout << "[Sorted]   plateNum/macarons/dist = ";
+    // for (int i = 0; i < plateLength; i++)
+    // {
+    //     cout  << plates[i].plateNum << "/" << plates[i].macarons <<"/" << plates[i].dist << "  ";
+    // }
+    // cout << endl;
+
+
+
     // Get the current index from sorted array
     for (int i = 0; i < plateLength; i++)
     {
         if (plates[i].dist == 0)
             currentIndex = i;
     }
+    // cout << "currentIndex = " << currentIndex << endl;
     
     // startIndex is used to avoid a plate with same macarons as current plate
     startIndex = currentIndex;
@@ -311,6 +325,7 @@ void Chain::SelectTarget() {
         else
             break;
     }
+    // cout << "startIndex = " << startIndex << endl;
      
 
 
@@ -358,12 +373,7 @@ void Chain::SelectTarget() {
         target = plates[0].pointer;
     }
 
-    // cout << "[Sorted]  macarons = ";
-    // for (int i = 0; i < plateLength; i++)
-    // {
-    //     cout <<  plates[i].macarons << "  " ;
-    // }
-    // cout << endl;
+    
 
 
 }
@@ -427,25 +437,26 @@ int main() {
     }
 
 
-    for (int i = 0; i < 1; i++)
+    for (int i = 0; i < 100; i++)
     {
-        cout << "[i = " << i << " ]" << endl;
+        // cout << "[i = " << i << " ]" << endl;
 
         plates.SelectCurrent();
+        // cout << "current plate num = " << plates.current->plateNum << endl;
 
         removedPlates = plates.Remove3(removedPlates);
 
         //
-        plates.Print();
+        // plates.Print();
 
         plates.SelectTarget();
         // cout << "step 3 finished" << endl;
-        cout << "[SelectTarget] target = " << plates.target->plateNum << endl;
+        // cout << "[SelectTarget] target = " << plates.target->plateNum << endl;
 
-        // plates.EatMacarons();
+        plates.EatMacarons();
 
-        // removedPlates.Reverse();
-        // plates.InsertAfterTarget(removedPlates);
+        removedPlates.Reverse();
+        plates.InsertAfterTarget(removedPlates);
         
         
         // cout << endl;
@@ -455,9 +466,7 @@ int main() {
         // cout << endl;
     }
     
-    // plates.PrintAns();
-
+    plates.PrintAns();
     
-
     return 0;
 }
