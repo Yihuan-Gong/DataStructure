@@ -1,0 +1,298 @@
+500
+600
+700
+100
+300
+250
+900
+300
+400
+800
+^Z
+[i = 0 ]
+now ptr = 5
+now p = 6
+now p = 7
+now p = 8
+True at (ptr, p) = (5, 8)
+True at (ptr, p) = (5, 8)
+dist1 = -1
+dist2 = 3
+2>1
+target = 1
+sameMacarons = 1
+[SelectTarget] target = 1
+
+Plate number = 1
+Macarons = 499
+--------------------
+Plate number = 4
+Macarons = 100
+--------------------
+Plate number = 3
+Macarons = 700
+--------------------
+Plate number = 2
+Macarons = 600
+--------------------
+Plate number = 5
+Macarons = 300
+--------------------
+Plate number = 6
+Macarons = 250
+--------------------
+Plate number = 7
+Macarons = 900
+--------------------
+Plate number = 8
+Macarons = 300
+--------------------
+Plate number = 9
+Macarons = 400
+--------------------
+Plate number = 10
+Macarons = 800
+--------------------
+
+
+
+[i = 1 ]
+now ptr = 8
+now p = 9
+now p = 10
+now p = 1
+now p = 4
+now p = 3
+now p = 2
+now ptr = 9
+now p = 10
+now p = 1
+now p = 4
+now p = 3
+now p = 2
+now ptr = 10
+now p = 1
+now p = 4
+now p = 3
+now p = 2
+now ptr = 1
+now p = 4
+now p = 3
+now p = 2
+now ptr = 4
+now p = 3
+now p = 2
+now ptr = 3
+now p = 2
+sameMacarons = 0
+Enter sameMacarons = false
+[SelectTarget] target = 1
+
+Plate number = 1
+Macarons = 498
+--------------------
+Plate number = 7
+Macarons = 900
+--------------------
+Plate number = 6
+Macarons = 250
+--------------------
+Plate number = 5
+Macarons = 300
+--------------------
+Plate number = 4
+Macarons = 100
+--------------------
+Plate number = 3
+Macarons = 700
+--------------------
+Plate number = 2
+Macarons = 600
+--------------------
+Plate number = 8
+Macarons = 300
+--------------------
+Plate number = 9
+Macarons = 400
+--------------------
+Plate number = 10
+Macarons = 800
+--------------------
+
+
+
+[i = 2 ]
+now ptr = 1
+now p = 7
+now p = 6
+now p = 5
+now p = 4
+now p = 3
+now p = 2
+now ptr = 7
+now p = 6
+now p = 5
+now p = 4
+now p = 3
+now p = 2
+now ptr = 6
+now p = 5
+now p = 4
+now p = 3
+now p = 2
+now ptr = 5
+now p = 4
+now p = 3
+now p = 2
+now ptr = 4
+now p = 3
+now p = 2
+now ptr = 3
+now p = 2
+sameMacarons = 0
+Enter sameMacarons = false
+[SelectTarget] target = 1
+
+Plate number = 1
+Macarons = 497
+--------------------
+Plate number = 10
+Macarons = 800
+--------------------
+Plate number = 9
+Macarons = 400
+--------------------
+Plate number = 8
+Macarons = 300
+--------------------
+Plate number = 7
+Macarons = 900
+--------------------
+Plate number = 6
+Macarons = 250
+--------------------
+Plate number = 5
+Macarons = 300
+--------------------
+Plate number = 4
+Macarons = 100
+--------------------
+Plate number = 3
+Macarons = 700
+--------------------
+Plate number = 2
+Macarons = 600
+--------------------
+
+
+
+[i = 3 ]
+now ptr = 8
+now p = 7
+now p = 6
+now p = 5
+True at (ptr, p) = (8, 5)
+True at (ptr, p) = (8, 5)
+dist1 = -1
+dist2 = 3
+2>1
+target = 2
+sameMacarons = 1
+[SelectTarget] target = 2
+
+Plate number = 8
+Macarons = 300
+--------------------
+Plate number = 7
+Macarons = 900
+--------------------
+Plate number = 6
+Macarons = 250
+--------------------
+Plate number = 5
+Macarons = 300
+--------------------
+Plate number = 4
+Macarons = 100
+--------------------
+Plate number = 3
+Macarons = 700
+--------------------
+Plate number = 2
+Macarons = 598
+--------------------
+Plate number = 9
+Macarons = 400
+--------------------
+Plate number = 10
+Macarons = 800
+--------------------
+Plate number = 1
+Macarons = 497
+--------------------
+
+
+
+[i = 4 ]
+now ptr = 1
+now p = 8
+now p = 7
+now p = 6
+now p = 5
+now p = 4
+now p = 3
+now ptr = 8
+now p = 7
+now p = 6
+now p = 5
+True at (ptr, p) = (8, 5)
+True at (ptr, p) = (8, 5)
+dist1 = -2
+dist2 = 2
+target = 3
+sameMacarons = 1
+[SelectTarget] target = 3
+
+Plate number = 8
+Macarons = 300
+--------------------
+Plate number = 7
+Macarons = 900
+--------------------
+Plate number = 6
+Macarons = 250
+--------------------
+Plate number = 5
+Macarons = 300
+--------------------
+Plate number = 4
+Macarons = 100
+--------------------
+Plate number = 3
+Macarons = 697
+--------------------
+Plate number = 10
+Macarons = 800
+--------------------
+Plate number = 9
+Macarons = 400
+--------------------
+Plate number = 2
+Macarons = 598
+--------------------
+Plate number = 1
+Macarons = 497
+--------------------
+
+
+
+3 / 697
+10 / 800
+9 / 400
+2 / 598
+1 / 497
+8 / 300
+7 / 900
+6 / 250
+5 / 300
+4 / 100
