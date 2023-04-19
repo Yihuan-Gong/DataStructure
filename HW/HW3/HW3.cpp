@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 using namespace std;
 
 
@@ -44,9 +45,8 @@ public:
     bool isleafNode(TreeNode *node);
     bool isFullNode(TreeNode *node);
 
-    void visit(TreeNode *current);
-    void preOrder(TreeNode *current);
-    void preOrder(TreeNode *current, bool visitRoot);
+    string visit(TreeNode *current);
+    void preOrder(TreeNode *current, string& str);
 
     BinaryTree() {root = new TreeNode(rootData); }
 };
@@ -65,7 +65,7 @@ public:
     char whichLowerStar(); /* Return 'L'/'R' if monster at left/right have lower star,
                               if two monster have same star, return 'S' 
                               if the real world is not full, return 'E'*/
-    void preOrderPrint() {preOrder(realWorld, false); }
+    void preOrder(TreeNode *current, string& str); // Pre-order traversal wihout printing root node
 
     Monster() {realWorld = getRoot(); }
     // ~Monster();
@@ -102,29 +102,18 @@ bool BinaryTree::isFullNode(TreeNode *node) {
     return node->leftChild!=NULL && node->rightChild!=NULL;
 }
 
-void BinaryTree::visit(TreeNode *current) {
-    cout << current->data << "* ";
+string BinaryTree::visit(TreeNode *current) {
+    return to_string(current->data) + "* ";
 }
 
-void BinaryTree::preOrder(TreeNode *current) {
+void BinaryTree::preOrder(TreeNode *current, string& str) {
     if (current) {
-        visit(current);
-        preOrder(current->leftChild);
-        preOrder(current->rightChild);
+        str += visit(current);
+        preOrder(current->leftChild, str);
+        preOrder(current->rightChild, str);
     }
 }
 
-void BinaryTree::preOrder(TreeNode *current, bool visitRoot) {
-    if (current) {
-        if (current != root)
-            visit(current);
-        else if (current == root && visitRoot)
-            visit(current);
-            
-        preOrder(current->leftChild);
-        preOrder(current->rightChild);
-    }
-}
 
 
 char Monster::whichLowerStar() {
@@ -169,10 +158,31 @@ void Monster::summon(int star) {
 }
 
 int Monster::attack() {
-    int leftStar  = realWorld->leftChild->data;
-    int rightStar = realWorld->rightChild->data;
+    int leftStar, rightStar;  
+
+    if (realWorld->leftChild)
+        leftStar = realWorld->leftChild->data;
+    else
+        leftStar = 0;
+    
+    if (realWorld->rightChild)
+        rightStar = realWorld->rightChild->data;
+    else
+        rightStar = 0;
+    
     return leftStar + rightStar;
 }
+
+
+void Monster::preOrder(TreeNode *current, string& str) {
+    if (current) {
+        if (current!= realWorld)
+            str += visit(current);
+        preOrder(current->leftChild, str);
+        preOrder(current->rightChild, str);
+    }
+}
+
 
 int getNum(string input) {
     string num;
@@ -184,8 +194,7 @@ int getNum(string input) {
 
 int main() {
 
-
-    string input;
+    string input, preOrderStr;
     Monster monsterTree;
     int star;
     int demage=0;
@@ -213,10 +222,14 @@ int main() {
     }
     
 
+    // Pre-order traversal of the monster tree
+    monsterTree.preOrder(monsterTree.getRoot(), preOrderStr);
+
     // Output the result
-    monsterTree.preOrderPrint();
-    cout << endl;
+    cout << preOrderStr.erase(preOrderStr.length()-1);
+    cout << "\n";
     cout << demage;
+    cout << "\n";
 
     // monsterTree.preOrder(monsterTree.getRoot()->getLeftChild());
 

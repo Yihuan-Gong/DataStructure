@@ -16,16 +16,18 @@ int main() {
     const char *chars = "abc";
     string str = "123*";
     int a;
+
+    cout << str.erase(str.length()-1);
     
     // for (int i = 0; i < str.length(); i++)
     // {
     //     if (isdigit(str[i])) num.push_back(str[i]); 
     // }
 
-    a = getNum(str);
-    a +=10;
+    // a = getNum(str);
+    // a +=10;
 
-    cout << a;
+    // cout << a;
     
 
     return 0;
