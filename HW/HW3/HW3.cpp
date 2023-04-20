@@ -142,7 +142,7 @@ void Monster::summon(int star) {
             insertRight(realWorld, star);
     }
 
-    else if (star>=5 && star<8) {
+    else if (star==5 || star==6) {
         if (isFull()) {
             if (whichLowerStar() == 'R')
                 insertRight(realWorld, star);
@@ -226,7 +226,8 @@ int main() {
     monsterTree.preOrder(monsterTree.getRoot(), preOrderStr);
 
     // Output the result
-    cout << preOrderStr.erase(preOrderStr.length()-1);
+    if (preOrderStr.length()>0)
+        cout << preOrderStr.erase(preOrderStr.length()-1);
     cout << "\n";
     cout << demage;
     cout << "\n";
