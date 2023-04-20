@@ -232,7 +232,5 @@ int main() {
     cout << demage;
     cout << "\n";
 
-    // monsterTree.preOrder(monsterTree.getRoot()->getLeftChild());
-
     return 0;
 }
