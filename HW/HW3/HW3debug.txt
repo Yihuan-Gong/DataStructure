@@ -1,0 +1,36 @@
+Summon -> 4* 
+Summon -> 3* 
+Summon -> 5* 
+Attack
+Summon -> 8*
+Summon -> 4*
+Attack
+Attack
+Summon -> 6*
+Summon -> 2*
+Summon -> 3*
+Summon -> 10*
+Attack
+TheEnd
+
+Summon -> 4* 
+Summon -> 3* 
+Summon -> 5* 
+Attack
+Summon -> 8*
+Summon -> 4*
+Attack
+Attack
+TheEnd
+
+Summon -> 4*
+Summon -> 3*
+Summon -> 5*
+Summon -> 8*
+Summon -> 4*
+TheEnd
+
+Summon -> 4*
+Summon -> 3*
+Summon -> 5*
+TheEnd
