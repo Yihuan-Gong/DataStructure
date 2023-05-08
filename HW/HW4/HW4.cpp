@@ -5,6 +5,9 @@
 #include <list>
 #include <string.h>
 #include <cmath>
+
+#define inf 1e10
+
 using namespace std;
 
 
@@ -20,19 +23,23 @@ typedef struct {
 class Vertex
 {
 private:
+    int id;
     string name;
     string type;
+    bool visited;
     list<pair<Vertex*, weight>> adjacentVertex;
 
 public:
-    Vertex(string name, string type);
+    Vertex(int id, string name, string type);
 
     friend class Graph;
 };
 
-Vertex::Vertex(string name, string type) {
+Vertex::Vertex(int id, string name, string type) {
+    this->id = id;
     this->name = name;
     this->type = type;
+    this->visited = false;
 }
 
 
@@ -41,32 +48,64 @@ class Graph
 private:
     vector<Vertex*> adjlist; // Adjecency list
     int totalVertex;
-    
+    int source;
+    int headquarter;
 
 public:
+    int getSource() {return source;}
+    int getHQ() {return headquarter;}
+
     void insertVertex(string name, string type);
     void insertEdge(int from, int to, int message);
+    void dijkstra(int start);
 
     Graph();
 };
 
 Graph::Graph() {
-    adjlist = {};
+    // Creat a header node to "fill" the index 0
+    // So if one create a new vertex, its index start from 1
+    Vertex *header = new Vertex(0, "header", "header");
+    adjlist.push_back(header);
     totalVertex = 0;
 }
 
 void Graph::insertVertex(string name, string type) {
-    Vertex *newVertex = new Vertex(name, type);
+    totalVertex += 1;
+
+    Vertex *newVertex = new Vertex(totalVertex, name, type);
     adjlist.push_back(newVertex);
 
-    totalVertex += 1;
+    // Mark source or headquarter
+    if (type == "SOURCE")
+        source = totalVertex;
+    else if (type == "HQ")
+        headquarter = totalVertex;
 }
 
 void Graph::insertEdge(int from, int to, int message) {
     // Vertex ID start from, but index of adjlist start from 0
-    Vertex* fromVertex = adjlist[from-1];
-    Vertex* toVertex   = adjlist[to-1];
+    Vertex* fromVertex = adjlist[from];  // from-1 if no header
+    Vertex* toVertex   = adjlist[to]; // to-1 if no header
 
+    // Check if this edge is allowed
+    if (fromVertex->type == "SOURCE") {
+        if (toVertex->type=="SPY")
+            return;
+    }
+    else if (fromVertex->type == "SPY") {
+        if (toVertex->type=="SPY" || toVertex->type=="SOURCE")
+            return;
+    }
+    else if (fromVertex->type == "CIV") {
+        if (toVertex->type=="HQ")
+            return;
+    }
+    else if (fromVertex->type == "HQ") {
+        if (toVertex->type=="CIV")
+            return;
+    }
+        
     weight edgeInfo;
     edgeInfo.message = message;
     edgeInfo.distance = round(1000./(float)message * 100.)/100.;
@@ -74,7 +113,72 @@ void Graph::insertEdge(int from, int to, int message) {
     fromVertex->adjacentVertex.push_back(make_pair(toVertex, edgeInfo));
 }
 
+void Graph::dijkstra(int start) {
 
+    /* Initialize shortestDist array (D[i] array in the text book)
+       Note: We want index start from 1, so there's +1 here  */
+    float D[totalVertex+1]; 
+    int Y[totalVertex+1];  
+    for (int i=1; i<=totalVertex; i++)  
+    {
+        D[i] = inf;
+        Y[i] = start;
+    }
+    D[start] = 0.;
+
+    // Debug
+    cout << "Initialize" << endl;
+    for (int i=1; i<=totalVertex; i++) {
+            cout << D[i] << "  ";
+    }
+    cout << endl;
+
+
+    // 
+    int currentVertex = start;
+    for (int j=1; j<totalVertex; j++) 
+    {
+        /* Visit that vertex decided just now
+           Visit "start" for the first visit */
+        adjlist[currentVertex]->visited = true;  
+        for (auto i  = adjlist[currentVertex]->adjacentVertex.begin(); 
+                  i != adjlist[currentVertex]->adjacentVertex.end(); ++i)
+        {
+            int adjVertexId = i->first->id; // The Id of adjcent vertex
+            float distance = i->second.distance;
+
+            // If passing "nextVertex" can reduce the distance from "start" to "vertexId"
+            bool visited = adjlist[adjVertexId]->visited;
+            bool shorter = (D[currentVertex] + distance) < D[adjVertexId];
+            if (shorter && !visited) {  // I'm wondering if "shorter" is necessary here
+                D[adjVertexId] = D[currentVertex] + distance;
+                Y[adjVertexId] = currentVertex;
+            }
+        }
+
+        // Debug
+        cout << j << "th visit.  Visit node " << currentVertex << endl;
+        for (int i=1; i<=totalVertex; i++) {
+            cout << D[i] << "  ";
+        }
+        cout << endl;
+
+
+
+        // Decide the vertex to be visited
+        float minDist = inf;
+        for (int i=1; i<=totalVertex; i++) {
+            if (D[i]<minDist && !(adjlist[i]->visited)) {
+                minDist = D[i];
+                currentVertex = i;
+            }
+        }
+    }
+    
+
+    // Test
+    cout << "shortest distance = " <<  D[headquarter] << endl;
+}
 
 
 int main() {
@@ -97,7 +201,7 @@ int main() {
             string name = input.substr(pos1+1);
 
             network.insertVertex(name, nodeType);
-            cout << "Inserting node of type " << nodeType << " with name " << name << endl;
+            // cout << "Inserting node of type " << nodeType << " with name " << name << endl;
         }
 
         else if (command == "INSERT_EDGE") {
@@ -111,9 +215,13 @@ int main() {
             // Use undirected graph for this problem
             network.insertEdge(id_number1, id_number2, total_message);
             network.insertEdge(id_number2, id_number1, total_message);
-            cout << "Inserting edge between nodes " << id_number1 << " and " << id_number2 << " with total message " << total_message << endl;
+            // cout << "Inserting edge between nodes " << id_number1 << " and " << id_number2 << " with total message " << total_message << endl;
         }
     }
+
+    cout << "source = " << network.getSource() << endl;
+    cout << "HQ = " << network.getHQ() << endl;
+    network.dijkstra(network.getSource());
     
 
     return 0;
