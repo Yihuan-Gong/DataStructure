@@ -126,12 +126,12 @@ void Graph::dijkstra(int start) {
     }
     D[start] = 0.;
 
-    // Debug
-    cout << "Initialize" << endl;
-    for (int i=1; i<=totalVertex; i++) {
-            cout << D[i] << "  ";
-    }
-    cout << endl;
+    // // Debug
+    // cout << "Initialize" << endl;
+    // for (int i=1; i<=totalVertex; i++) {
+    //         cout << D[i] << "  ";
+    // }
+    // cout << endl;
 
 
     // 
@@ -156,13 +156,12 @@ void Graph::dijkstra(int start) {
             }
         }
 
-        // Debug
-        cout << j << "th visit.  Visit node " << currentVertex << endl;
-        for (int i=1; i<=totalVertex; i++) {
-            cout << D[i] << "  ";
-        }
-        cout << endl;
-
+        // // Debug
+        // cout << j << "th visit.  Visit node " << currentVertex << endl;
+        // for (int i=1; i<=totalVertex; i++) {
+        //     cout << D[i] << "  ";
+        // }
+        // cout << endl;
 
 
         // Decide the vertex to be visited
