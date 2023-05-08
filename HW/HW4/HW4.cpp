@@ -10,9 +10,7 @@
 
 using namespace std;
 
-
 // Vertice, Edges, Graph
-
 
 typedef struct {
     int message;
@@ -49,11 +47,17 @@ private:
     vector<Vertex*> adjlist; // Adjecency list
     int totalVertex;
     int source;
-    int headquarter;
+    int headquarter;  
+    float shortestDist;  // The shortest distance from source to HQ
+    string shortestPath; // The shortest path from source to HQ
+    int totalMessage;    // Total message in shortest path
 
 public:
-    int getSource() {return source;}
-    int getHQ() {return headquarter;}
+    int getSource() { return source; }
+    int getHQ() { return headquarter; }
+    float  getShortestDist() { return shortestDist; }
+    string getShortestPath() { return shortestPath; }
+    int    getTotalMessage() { return totalMessage; }
 
     void insertVertex(string name, string type);
     void insertEdge(int from, int to, int message);
@@ -67,6 +71,7 @@ Graph::Graph() {
     // So if one create a new vertex, its index start from 1
     Vertex *header = new Vertex(0, "header", "header");
     adjlist.push_back(header);
+
     totalVertex = 0;
 }
 
@@ -119,22 +124,23 @@ void Graph::dijkstra(int start) {
        Note: We want index start from 1, so there's +1 here  */
     float D[totalVertex+1]; 
     int Y[totalVertex+1];  
-    for (int i=1; i<=totalVertex; i++)  
-    {
+    int M[totalVertex+1];
+    for (int i=1; i<=totalVertex; i++) {
         D[i] = inf;
         Y[i] = start;
+        M[i] = 0;
     }
     D[start] = 0.;
 
-    // // Debug
+    // Debug
     // cout << "Initialize" << endl;
     // for (int i=1; i<=totalVertex; i++) {
-    //         cout << D[i] << "  ";
+    //         cout << M[i] << "  ";
     // }
     // cout << endl;
 
 
-    // 
+    // Visit each vertex by Dijkstra alogrithm
     int currentVertex = start;
     for (int j=1; j<totalVertex; j++) 
     {
@@ -146,20 +152,22 @@ void Graph::dijkstra(int start) {
         {
             int adjVertexId = i->first->id; // The Id of adjcent vertex
             float distance = i->second.distance;
+            int message    = i->second.message; 
 
             // If passing "nextVertex" can reduce the distance from "start" to "vertexId"
             bool visited = adjlist[adjVertexId]->visited;
             bool shorter = (D[currentVertex] + distance) < D[adjVertexId];
             if (shorter && !visited) {  // I'm wondering if "shorter" is necessary here
                 D[adjVertexId] = D[currentVertex] + distance;
+                M[adjVertexId] = M[currentVertex] + message;
                 Y[adjVertexId] = currentVertex;
             }
         }
 
-        // // Debug
+        // Debug
         // cout << j << "th visit.  Visit node " << currentVertex << endl;
         // for (int i=1; i<=totalVertex; i++) {
-        //     cout << D[i] << "  ";
+        //     cout << M[i] << "  ";
         // }
         // cout << endl;
 
@@ -174,9 +182,27 @@ void Graph::dijkstra(int start) {
         }
     }
     
+    // Update the shortest distance from source to HQ
+    shortestDist = D[headquarter];
 
-    // Test
-    cout << "shortest distance = " <<  D[headquarter] << endl;
+    // Update total message
+    totalMessage = M[headquarter];
+
+    // Update the shortest PATH
+    stack<int> path;
+
+    currentVertex = headquarter;
+    while (currentVertex != source) {
+        currentVertex = Y[currentVertex];
+        path.push(currentVertex);
+    }
+    
+    while (!path.empty()) {
+        shortestPath += adjlist[path.top()]->name;
+        shortestPath += " -> ";
+        path.pop();
+    }
+    shortestPath += adjlist[headquarter]->name;
 }
 
 
@@ -184,10 +210,12 @@ int main() {
     
     string input;
     Graph network;
-    
 
     while (getline(cin, input))
     {
+        if (input == "ANALYZE")
+            break;
+
         int pos = input.find(' ');
         string command = input.substr(0, pos);
 
@@ -218,10 +246,16 @@ int main() {
         }
     }
 
-    cout << "source = " << network.getSource() << endl;
-    cout << "HQ = " << network.getHQ() << endl;
+    // cout << "source = " << network.getSource() << endl;
+    // cout << "HQ = " << network.getHQ() << endl;
+
+    // Do excute the Dijkstra alogrithm
     network.dijkstra(network.getSource());
     
+    // Out put the results
+    cout << network.getShortestPath() << "\n";
+    cout << network.getTotalMessage() << "\n";
+    cout << network.getShortestDist() << "\n";
 
     return 0;
 }

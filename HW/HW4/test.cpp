@@ -1,18 +1,25 @@
 #include <iostream>
 #include <string.h>
 #include <vector>
+#include <stack>
 using namespace std;
 
 int main() {
 
     string input = "Iaa is very sad";
+    string noSpace = "YouAreDead";
     pair<int, int> p;
-    p = make_pair(3,2);
+    stack<int> path;
+    
+    // p = make_pair(3,2);
 
-    // int pos = input.find(' ');
-    // cout << input.substr(0, pos);
+    // path.push(3);
+    // path.push(2);
+    // path.push(1);
 
-    int arr[5] = {100};
+    // path.pop();
+    // input << to_string(path.top());
 
-    cout << arr[0];
+    // int p = noSpace.find(' ');
+    cout << noSpace.find(' ');
 }
