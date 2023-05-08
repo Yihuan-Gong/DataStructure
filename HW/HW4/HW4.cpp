@@ -156,11 +156,30 @@ void Graph::dijkstra(int start) {
 
             // If passing "nextVertex" can reduce the distance from "start" to "vertexId"
             bool visited = adjlist[adjVertexId]->visited;
-            bool shorter = (D[currentVertex] + distance) < D[adjVertexId];
-            if (shorter && !visited) {  // I'm wondering if "shorter" is necessary here
-                D[adjVertexId] = D[currentVertex] + distance;
-                M[adjVertexId] = M[currentVertex] + message;
-                Y[adjVertexId] = currentVertex;
+            // bool shorter = (D[currentVertex] + distance) < D[adjVertexId];
+            if (visited)
+                continue;
+            else {
+                if ((D[currentVertex] + distance) < D[adjVertexId]) {
+                    D[adjVertexId] = D[currentVertex] + distance;
+                    M[adjVertexId] = M[currentVertex] + message;
+                    Y[adjVertexId] = currentVertex;
+                }
+                /* Considering multiple options of shortest path, we should choose 
+                   the path with smaller path ID
+                   Ex: 1->2->5      dist = 11  (path 1)
+                       1->2->3->5   dist = 11  (path 2)
+                   In this example we should choose path 2 since at the third node 3<5. 
+                */
+                else if ( (D[currentVertex] + distance) == D[adjVertexId] && 
+                          currentVertex < adjVertexId  ) 
+                {
+                    D[adjVertexId] = D[currentVertex] + distance;  // *1
+                    M[adjVertexId] = M[currentVertex] + message;
+                    Y[adjVertexId] = currentVertex;
+                    // Note that the line (*1) is not nessary because the distance 
+                    // is the same
+                }
             }
         }
 
@@ -185,8 +204,10 @@ void Graph::dijkstra(int start) {
     // Update the shortest distance from source to HQ
     shortestDist = D[headquarter];
 
+
     // Update total message
     totalMessage = M[headquarter];
+
 
     // Update the shortest PATH
     stack<int> path;
@@ -228,7 +249,6 @@ int main() {
             string name = input.substr(pos1+1);
 
             network.insertVertex(name, nodeType);
-            // cout << "Inserting node of type " << nodeType << " with name " << name << endl;
         }
 
         else if (command == "INSERT_EDGE") {
@@ -242,12 +262,8 @@ int main() {
             // Use undirected graph for this problem
             network.insertEdge(id_number1, id_number2, total_message);
             network.insertEdge(id_number2, id_number1, total_message);
-            // cout << "Inserting edge between nodes " << id_number1 << " and " << id_number2 << " with total message " << total_message << endl;
         }
     }
-
-    // cout << "source = " << network.getSource() << endl;
-    // cout << "HQ = " << network.getHQ() << endl;
 
     // Do excute the Dijkstra alogrithm
     network.dijkstra(network.getSource());
