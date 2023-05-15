@@ -153,13 +153,12 @@ void Graph::dijkstra(int start) {
             int adjVertexId = i->first->id; // The Id of adjcent vertex
             float distance = i->second.distance;
             int message    = i->second.message; 
-
-            // If passing "nextVertex" can reduce the distance from "start" to "vertexId"
             bool visited = adjlist[adjVertexId]->visited;
-            // bool shorter = (D[currentVertex] + distance) < D[adjVertexId];
+            
             if (visited)
                 continue;
             else {
+                // If passing "nextVertex" can reduce the distance from "start" to "vertexId"
                 if ((D[currentVertex] + distance) < D[adjVertexId]) {
                     D[adjVertexId] = D[currentVertex] + distance;
                     M[adjVertexId] = M[currentVertex] + message;
