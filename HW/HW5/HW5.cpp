@@ -27,10 +27,6 @@ struct GradBinHyperWeight {
     }
     void applyGradSlider(Fruit& f) const
     {
-        // cout << "binThreshold = " << binThreshold << endl;
-        // cout << "featureIdx = " << featureIdx << endl;
-        // cout << "f.name = " << f.name << endl;
-        // cout << "f.hyperFeatures[featureIdx] = " << f.hyperFeatures[featureIdx] << endl;
         f.hyperFeatures[featureIdx] = (int) ((double) f.hyperFeatures[featureIdx] * gradSlider);
     }
 };
@@ -93,30 +89,6 @@ void TreeGBHW::insert(Data data)
     // Add the new node to the tree
     ArrTree.push_back(newGradBinHyperWeight);
     nodes++;
-
-    // // Find out the node to insert a new node
-    // // "prev" is the node we can insert a new node at below
-    // current = root;
-    // while (current)
-    // {
-    //     prev = current;
-
-    //     if (data.binThreshold < current->binThreshold)
-    //         current = current->backwardContinuation;
-    //     else
-    //         current = current->forwardContinuation;  
-    // }  
-     
-    // // Insert the new node below "prev"
-    // if (data.binThreshold < prev->binThreshold) {
-    //     newGradBinHyperWeight->backwardContinuation = prev->backwardContinuation;
-    //     prev->backwardContinuation = newGradBinHyperWeight;
-    // }
-    // else {
-    //     newGradBinHyperWeight->forwardContinuation = prev->forwardContinuation;
-    //     prev->forwardContinuation = newGradBinHyperWeight;
-    // }
-
 }
 
 GradBinHyperWeight* TreeGBHW::createLinkListTree(int i) 
@@ -144,9 +116,6 @@ void TreeGBHW::HyperLearning(vector<Fruit>& fruitInputArr)
             prev = current;
 
             // Apply gradient slide
-            // cout << "at i = " << i << endl; // Debug
-            // cout << "fruitInputArr[i].name             = " << fruitInputArr[i].name << endl;
-            // cout << "fruitInputArr[i].hyperFeatures[0] = " << fruitInputArr[i].hyperFeatures[0] << endl;
             current->applyGradSlider( fruitInputArr[i] );
             feature = fruitInputArr[i].hyperFeatures[current->featureIdx];
             
@@ -163,14 +132,10 @@ void TreeGBHW::HyperLearning(vector<Fruit>& fruitInputArr)
         newItem->fruitName   = fruitInputArr[i].name;
         newItem->usedFeatrue = feature;
 
-        if (feature < prev->binThreshold) {
-            newItem->backwardContinuation = prev->backwardContinuation;
+        if (feature < prev->binThreshold) 
             prev->backwardContinuation = newItem;
-        }
-        else {
-            newItem->forwardContinuation = prev->forwardContinuation;
-            prev->forwardContinuation = newItem;
-        }        
+        else
+            prev->forwardContinuation = newItem;      
     }
 }
 
@@ -244,11 +209,11 @@ int main() {
 
             if (index == -1)
                 numGBHW = stoi(input);
-            else if (index%numGBHW == 0)
+            else if (index%3 == 0)
                 data.featureIdx = stoi(input);
-            else if (index%numGBHW == 1)
+            else if (index%3 == 1)
                 data.gradSlider = stod(input);
-            else 
+            else if (index%3 == 2)
             {
                 data.binThreshold = stoi(input);
 
