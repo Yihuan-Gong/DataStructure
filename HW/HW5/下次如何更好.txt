@@ -1,0 +1,9 @@
+這次遇到問題的順序
+
+1. 讀錯題目：沒有搞清楚GradBinHyperWeight是用array representation of tree
+   輸入，誤以為是要對GradBinHyperWeight做BST
+
+2. array representation轉tree representation搞了很久
+
+3. Input餵錯，造成只有number of GradBinHyperWeight = 4的時候才正確。
+   下次遇到這種很case dependent的狀況，可以檢查input是否餵錯。
